@@ -1,0 +1,171 @@
+{
+	"name": "OnPrem2AzureSQL",
+	"properties": {
+		"activities": [
+			{
+				"name": "OnPrem2AzureSQL",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"modifiedDatetimeStart": {
+								"value": "@{adddays(utcnow(),-1)}",
+								"type": "Expression"
+							},
+							"wildcardFileName": "*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "OriginAirportCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "OriginAirportCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Month",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Month",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "DayofMonth",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DayofMonth",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "CRSDepHour",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CRSDepHour",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfWeek",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DayOfWeek",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "Carrier",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Carrier",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DestAirportCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DestAirportCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DepDel15",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DepDel15",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "WindSpeed",
+									"type": "String"
+								},
+								"sink": {
+									"name": "WindSpeed",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "SeaLevelPressure",
+									"type": "String"
+								},
+								"sink": {
+									"name": "SeaLevelPressure",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "HourlyPrecip",
+									"type": "String"
+								},
+								"sink": {
+									"name": "HourlyPrecip",
+									"type": "Int32"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "OnPrem_FlightAndWeatherRawFiles",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSql_FlightAndWeather_Table",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
