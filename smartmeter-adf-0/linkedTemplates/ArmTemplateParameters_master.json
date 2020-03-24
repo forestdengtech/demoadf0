@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "smartmeter-adf-0"
+		},
+		"Datasource_1_FileFolder_password": {
+			"value": ""
+		},
+		"Datasource_1_Sqlserver_AdventureWorks_connectionString": {
+			"value": ""
+		},
+		"Datasource_1_Sqlserver_AdventureWorks_password": {
+			"value": ""
+		},
+		"SmartMeter_AzureSQLDB_connectionString": {
+			"value": ""
+		},
+		"SmartMeter_datalake_accountKey": {
+			"value": ""
+		},
+		"Datasource_1_FileFolder_properties_typeProperties_host": {
+			"value": "C:\\adf_datafiles"
+		},
+		"Datasource_1_FileFolder_properties_typeProperties_userId": {
+			"value": "demouser"
+		},
+		"Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName": {
+			"value": "demouser"
+		},
+		"SmartMeter_datalake_properties_typeProperties_url": {
+			"value": "https://smartmeterdatalake0.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

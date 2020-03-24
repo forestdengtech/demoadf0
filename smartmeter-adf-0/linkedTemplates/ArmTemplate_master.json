@@ -1,0 +1,105 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "smartmeter-adf-0"
+		},
+		"Datasource_1_FileFolder_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Datasource_1_FileFolder'"
+		},
+		"Datasource_1_Sqlserver_AdventureWorks_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Datasource_1_Sqlserver_AdventureWorks'"
+		},
+		"Datasource_1_Sqlserver_AdventureWorks_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Datasource_1_Sqlserver_AdventureWorks'"
+		},
+		"SmartMeter_AzureSQLDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SmartMeter_AzureSQLDB'"
+		},
+		"SmartMeter_datalake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'SmartMeter_datalake'"
+		},
+		"Datasource_1_FileFolder_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\adf_datafiles"
+		},
+		"Datasource_1_FileFolder_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "demouser"
+		},
+		"Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "demouser"
+		},
+		"SmartMeter_datalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://smartmeterdatalake0.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"SmartMeter_AzureSQLDB_connectionString": {
+						"value": "[parameters('SmartMeter_AzureSQLDB_connectionString')]"
+					},
+					"SmartMeter_datalake_accountKey": {
+						"value": "[parameters('SmartMeter_datalake_accountKey')]"
+					},
+					"Datasource_1_FileFolder_password": {
+						"value": "[parameters('Datasource_1_FileFolder_password')]"
+					},
+					"Datasource_1_Sqlserver_AdventureWorks_connectionString": {
+						"value": "[parameters('Datasource_1_Sqlserver_AdventureWorks_connectionString')]"
+					},
+					"Datasource_1_Sqlserver_AdventureWorks_password": {
+						"value": "[parameters('Datasource_1_Sqlserver_AdventureWorks_password')]"
+					},
+					"SmartMeter_datalake_properties_typeProperties_url": {
+						"value": "[parameters('SmartMeter_datalake_properties_typeProperties_url')]"
+					},
+					"Datasource_1_FileFolder_properties_typeProperties_host": {
+						"value": "[parameters('Datasource_1_FileFolder_properties_typeProperties_host')]"
+					},
+					"Datasource_1_FileFolder_properties_typeProperties_userId": {
+						"value": "[parameters('Datasource_1_FileFolder_properties_typeProperties_userId')]"
+					},
+					"Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName": {
+						"value": "[parameters('Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
