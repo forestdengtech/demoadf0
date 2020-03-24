@@ -1,0 +1,6 @@
+{
+	"name": "vm-datasource-0",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
