@@ -1,5 +1,5 @@
 {
-	"name": "OnPrem_FlightAndWeatherRawFiles",
+	"name": "OnPrem_FlightAndWeatherRawFiles_Output",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Datasource_1_FileFolder",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"folderPath": "input/FlightsAndWeather"
+				"folderPath": "FlightsAndWeather"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
