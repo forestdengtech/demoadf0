@@ -46,19 +46,7 @@
 						}
 					},
 					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "OnPrem_WeatherFiles_Delays",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Datalake_WeatherFiles_Delays",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			},
 			{
 				"name": "CP2CLoud_Weather_Location",
@@ -104,19 +92,7 @@
 						}
 					},
 					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "OnPrem_WeatherFiles_Location",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Datalake_WeatherFiles_Location",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			},
 			{
 				"name": "CP2Cloud_AirAndWeatherRawFiles",
@@ -163,13 +139,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "OnPrem_AirAndWeatherRawFiles",
+						"referenceName": "OnPrem_FlightAndWeatherRawFiles",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Datalake_AirAndWeatherRawFiles",
+						"referenceName": "Datalake_FlightAndWeatherRawFiles",
 						"type": "DatasetReference"
 					}
 				]
@@ -313,13 +289,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Datalake_AirAndWeatherRawFiles",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "CosmosDb_AirAndWeather",
+						"referenceName": "Datalake_FlightAndWeatherRawFiles",
 						"type": "DatasetReference"
 					}
 				]

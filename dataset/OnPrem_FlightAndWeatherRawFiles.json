@@ -1,5 +1,5 @@
 {
-	"name": "OnPrem_AirAndWeatherRawFiles",
+	"name": "OnPrem_FlightAndWeatherRawFiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Datasource_1_FileFolder",

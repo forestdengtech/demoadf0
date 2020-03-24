@@ -1,5 +1,5 @@
 {
-	"name": "Datalake_AirAndWeatherRawFiles",
+	"name": "Datalake_FlightAndWeatherRawFiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SmartMeter_datalake",

@@ -1,0 +1,12 @@
+{
+	"name": "AzureSql_FlightAndWeather",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SmartMeter_AzureSQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
