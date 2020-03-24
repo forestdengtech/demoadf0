@@ -5,12 +5,12 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "integrated security=True;data source=vm-datasource-1;initial catalog=AdventureWorks2017",
+			"connectionString": "integrated security=True;data source=vm-datasource-0;initial catalog=AdventureWorks2017",
 			"userName": "demouser",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiNjgyMTJhNi05ZDhjLTRkN2MtOTNiMy1kMjI4M2EyZmZmMTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4YzNhMThkMy0zYmYzLTRmYTYtOGM4Yi03ZGViMDMwMTY1YTUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
-			"referenceName": "vm-datasource-1",
+			"referenceName": "vm-datasource-0",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
