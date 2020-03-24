@@ -1,7 +1,0 @@
-{
-	"name": "vm-datasource-1",
-	"properties": {
-		"type": "SelfHosted",
-		"description": "IR for vm-datasource-1"
-	}
-}
