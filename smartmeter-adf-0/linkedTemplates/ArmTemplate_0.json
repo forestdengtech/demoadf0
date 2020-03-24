@@ -89,6 +89,80 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSql_FlightAndWeather1_Table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SmartMeter_AzureSQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "OriginAirportCode",
+						"type": "varchar"
+					},
+					{
+						"name": "Month",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DayofMonth",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CRSDepHour",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DayOfWeek",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Carrier",
+						"type": "varchar"
+					},
+					{
+						"name": "DestAirportCode",
+						"type": "varchar"
+					},
+					{
+						"name": "DepDel15",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WindSpeed",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SeaLevelPressure",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "HourlyPrecip",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "FlightsAndWeather1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_AzureSQLDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureSql_FlightAndWeather_Table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -191,81 +265,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSql_FlightAndWeather1_Table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SmartMeter_AzureSQLDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "OriginAirportCode",
-						"type": "varchar"
-					},
-					{
-						"name": "Month",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "DayofMonth",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CRSDepHour",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "DayOfWeek",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Carrier",
-						"type": "varchar"
-					},
-					{
-						"name": "DestAirportCode",
-						"type": "varchar"
-					},
-					{
-						"name": "DepDel15",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "WindSpeed",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SeaLevelPressure",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "HourlyPrecip",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "FlightsAndWeather1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_AzureSQLDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OnPrem_FlightAndWeatherRawFiles')]",
+			"name": "[concat(parameters('factoryName'), '/OnPrem_FlightAndWeatherRawFiles_Input')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -278,7 +278,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "FileServerLocation",
-						"folderPath": "FlightsAndWeather"
+						"folderPath": "Input/FlightsAndWeather"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -334,6 +334,141 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Datasource_1_FileFolder')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OnPrem_FlightAndWeatherRawFiles_Output')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Datasource_1_FileFolder",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"folderPath": {
+							"value": "Output/FlightsAndWeather/@{formatDateTime(adddays(utcnow(),-1),'yyyy')}/@{formatDateTime(adddays(utcnow(),-1),'MM')}/@{formatDateTime(adddays(utcnow(),-1),'dd')}",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "OriginAirportCode",
+						"type": "String"
+					},
+					{
+						"name": "Month",
+						"type": "String"
+					},
+					{
+						"name": "DayofMonth",
+						"type": "String"
+					},
+					{
+						"name": "CRSDepHour",
+						"type": "String"
+					},
+					{
+						"name": "DayOfWeek",
+						"type": "String"
+					},
+					{
+						"name": "Carrier",
+						"type": "String"
+					},
+					{
+						"name": "DestAirportCode",
+						"type": "String"
+					},
+					{
+						"name": "DepDel15",
+						"type": "String"
+					},
+					{
+						"name": "WindSpeed",
+						"type": "String"
+					},
+					{
+						"name": "SeaLevelPressure",
+						"type": "String"
+					},
+					{
+						"name": "HourlyPrecip",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Datasource_1_FileFolder')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSQL2OnPrem')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "AzureSQL2OnPrem",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"isolationLevel": "Snapshot"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "FileServerWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSql_FlightAndWeather1_Table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OnPrem_FlightAndWeatherRawFiles_Output",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSql_FlightAndWeather1_Table')]",
+				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles_Output')]"
 			]
 		},
 		{
@@ -494,7 +629,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "OnPrem_FlightAndWeatherRawFiles",
+								"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -511,7 +646,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles')]",
+				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles_Input')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSql_FlightAndWeather_Table')]"
 			]
 		},
@@ -676,7 +811,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "OnPrem_FlightAndWeatherRawFiles",
+								"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -743,7 +878,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles')]",
+				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles_Input')]",
 				"[concat(variables('factoryId'), '/datasets/Datalake_FlightAndWeatherRawFiles')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSql_FlightAndWeather1_Table')]"
 			]
@@ -784,6 +919,47 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/OnPrem2AzureSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/month_trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "OnPrem2Datalake2AzureSQL",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 1,
+						"startTime": "2020-03-24T12:03:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								12
+							],
+							"monthDays": [
+								1
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/OnPrem2Datalake2AzureSQL')]"
 			]
 		}
 	]
