@@ -1,0 +1,25 @@
+{
+	"name": "Datalake_WeatherFiles_Location",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SmartMeter_datalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "location.csv",
+				"folderPath": "Location",
+				"fileSystem": "weathersamples"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

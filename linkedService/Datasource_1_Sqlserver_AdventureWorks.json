@@ -1,0 +1,17 @@
+{
+	"name": "Datasource_1_Sqlserver_AdventureWorks",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=vm-datasource-1;initial catalog=AdventureWorks2017",
+			"userName": "demouser",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiNjgyMTJhNi05ZDhjLTRkN2MtOTNiMy1kMjI4M2EyZmZmMTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "vm-datasource-1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
