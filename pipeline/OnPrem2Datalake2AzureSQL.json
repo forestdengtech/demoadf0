@@ -157,7 +157,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "OnPrem_FlightAndWeatherRawFiles",
+						"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
 						"type": "DatasetReference"
 					}
 				],

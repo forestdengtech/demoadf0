@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"folderPath": "Output"
+				"folderPath": "Output/FlightsAndWeather/@{formatDateTime(adddays(utcnow(),-1),'yyyy')}/@{formatDateTime(adddays(utcnow(),-1),'MM')}/@{formatDateTime(adddays(utcnow(),-1),'DD')}"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

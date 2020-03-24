@@ -20,11 +20,29 @@
 						"queryTimeout": "02:00:00",
 						"isolationLevel": "Snapshot"
 					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "FileServerWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "AzureSql_FlightAndWeather1_Table",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OnPrem_FlightAndWeatherRawFiles_Output",
 						"type": "DatasetReference"
 					}
 				]
