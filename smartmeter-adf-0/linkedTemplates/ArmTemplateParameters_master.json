@@ -21,7 +21,7 @@
 			"value": ""
 		},
 		"Datasource_1_FileFolder_properties_typeProperties_host": {
-			"value": "C:\\adf_datafiles"
+			"value": "C:\\SmartMeterData"
 		},
 		"Datasource_1_FileFolder_properties_typeProperties_userId": {
 			"value": "demouser"

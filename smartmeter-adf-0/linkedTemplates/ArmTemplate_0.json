@@ -33,7 +33,7 @@
 		},
 		"Datasource_1_FileFolder_properties_typeProperties_host": {
 			"type": "string",
-			"defaultValue": "C:\\adf_datafiles"
+			"defaultValue": "C:\\SmartMeterData"
 		},
 		"Datasource_1_FileFolder_properties_typeProperties_userId": {
 			"type": "string",
@@ -89,7 +89,17 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSql_FlightAndWeather1_Table')]",
+			"name": "[concat(parameters('factoryName'), '/vm-datasource-2')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSql_SmartMeterMetaData_Table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -101,61 +111,79 @@
 				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"name": "OriginAirportCode",
+						"name": "MeterSerialNo",
 						"type": "varchar"
 					},
 					{
-						"name": "Month",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "DayofMonth",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CRSDepHour",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "DayOfWeek",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Carrier",
+						"name": "Material",
 						"type": "varchar"
 					},
 					{
-						"name": "DestAirportCode",
+						"name": "Manufacturer",
 						"type": "varchar"
 					},
 					{
-						"name": "DepDel15",
+						"name": "MeterType",
+						"type": "varchar"
+					},
+					{
+						"name": "YearOfManufacture",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "WindSpeed",
+						"name": "YearOfCertification",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "SeaLevelPressure",
+						"name": "MonthOfManufacture",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "HourlyPrecip",
+						"name": "CreationDate",
+						"type": "varchar"
+					},
+					{
+						"name": "ModernType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "IMSI",
+						"type": "varchar"
+					},
+					{
+						"name": "IMEI",
+						"type": "varchar"
+					},
+					{
+						"name": "ICCID",
+						"type": "varchar"
+					},
+					{
+						"name": "FirmwareVer",
+						"type": "varchar"
+					},
+					{
+						"name": "ConfigurationVer",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "varchar"
+					},
+					{
+						"name": "Seed",
 						"type": "int",
 						"precision": 10
 					}
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "FlightsAndWeather1"
+					"table": "smartmetermetadata"
 				}
 			},
 			"dependsOn": [
@@ -163,28 +191,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSql_FlightAndWeather_Table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SmartMeter_AzureSQLDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "FlightsAndWeather"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_AzureSQLDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Datalake_FlightAndWeatherRawFiles')]",
+			"name": "[concat(parameters('factoryName'), '/Datalake_SmartMeterMetaData_Input')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -197,12 +204,44 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "AirAndWeather.csv",
+						"fileName": "SmartMeterMetaData.csv",
 						"folderPath": {
-							"value": "@{formatDateTime(adddays(utcnow(),-1),'yyyy')}/@{formatDateTime(adddays(utcnow(),-1),'MM')}",
+							"value": "/Input/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
 							"type": "Expression"
 						},
-						"fileSystem": "airandweather"
+						"fileSystem": "smartmetermetadata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Datalake_SmartMeterMetaData_Output')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SmartMeter_datalake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "SmartMeterMetaData.csv",
+						"folderPath": {
+							"value": "/Output/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
+							"type": "Expression"
+						},
+						"fileSystem": "smartmetermetadata"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -220,7 +259,7 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "FileFolder to vm-datasource-0",
+				"description": "FileFolder to vm-datasource-2",
 				"annotations": [],
 				"type": "FileServer",
 				"typeProperties": {
@@ -232,12 +271,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "vm-datasource-0",
+					"referenceName": "vm-datasource-2",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-0')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-2')]"
 			]
 		},
 		{
@@ -256,16 +295,16 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "vm-datasource-0",
+					"referenceName": "vm-datasource-2",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-0')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-2')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/OnPrem_FlightAndWeatherRawFiles_Input')]",
+			"name": "[concat(parameters('factoryName'), '/OnPrem_SmartMeterMetaData_Input')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -278,7 +317,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "FileServerLocation",
-						"folderPath": "Input/FlightsAndWeather"
+						"folderPath": "Input"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -287,47 +326,67 @@
 				},
 				"schema": [
 					{
-						"name": "OriginAirportCode",
+						"name": " MeterSerialNo",
 						"type": "String"
 					},
 					{
-						"name": "Month",
+						"name": " Material",
 						"type": "String"
 					},
 					{
-						"name": "DayofMonth",
+						"name": " Manufacturer",
 						"type": "String"
 					},
 					{
-						"name": "CRSDepHour",
+						"name": " MeterType",
 						"type": "String"
 					},
 					{
-						"name": "DayOfWeek",
+						"name": "YearOfManufacture",
 						"type": "String"
 					},
 					{
-						"name": "Carrier",
+						"name": "YearOfCertification",
 						"type": "String"
 					},
 					{
-						"name": "DestAirportCode",
+						"name": "MonthOfManufacture",
 						"type": "String"
 					},
 					{
-						"name": "DepDel15",
+						"name": "CreationDate",
 						"type": "String"
 					},
 					{
-						"name": "WindSpeed",
+						"name": "ModernType",
 						"type": "String"
 					},
 					{
-						"name": "SeaLevelPressure",
+						"name": "IMSI",
 						"type": "String"
 					},
 					{
-						"name": "HourlyPrecip",
+						"name": "IMEI",
+						"type": "String"
+					},
+					{
+						"name": "ICCID",
+						"type": "String"
+					},
+					{
+						"name": "FirmwareVer",
+						"type": "String"
+					},
+					{
+						"name": "ConfigurationVer",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					},
+					{
+						"name": "Seed",
 						"type": "String"
 					}
 				]
@@ -337,7 +396,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/OnPrem_FlightAndWeatherRawFiles_Output')]",
+			"name": "[concat(parameters('factoryName'), '/OnPrem_SmartMeterMetaData_Output')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -350,8 +409,12 @@
 				"typeProperties": {
 					"location": {
 						"type": "FileServerLocation",
+						"fileName": {
+							"value": "smartmetermetadata_@{formatDateTime(utcnow(),'HHmm')}.csv",
+							"type": "Expression"
+						},
 						"folderPath": {
-							"value": "Output/FlightsAndWeather/@{formatDateTime(adddays(utcnow(),-1),'yyyy')}/@{formatDateTime(adddays(utcnow(),-1),'MM')}/@{formatDateTime(adddays(utcnow(),-1),'dd')}",
+							"value": "Output/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
 							"type": "Expression"
 						}
 					},
@@ -360,55 +423,130 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": [
-					{
-						"name": "OriginAirportCode",
-						"type": "String"
-					},
-					{
-						"name": "Month",
-						"type": "String"
-					},
-					{
-						"name": "DayofMonth",
-						"type": "String"
-					},
-					{
-						"name": "CRSDepHour",
-						"type": "String"
-					},
-					{
-						"name": "DayOfWeek",
-						"type": "String"
-					},
-					{
-						"name": "Carrier",
-						"type": "String"
-					},
-					{
-						"name": "DestAirportCode",
-						"type": "String"
-					},
-					{
-						"name": "DepDel15",
-						"type": "String"
-					},
-					{
-						"name": "WindSpeed",
-						"type": "String"
-					},
-					{
-						"name": "SeaLevelPressure",
-						"type": "String"
-					},
-					{
-						"name": "HourlyPrecip",
-						"type": "String"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Datasource_1_FileFolder')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSQL2DataLake2OnPrem')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "AzureSQL2DataLake2OnPrem",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "AzureDB2Datalake",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "FileServerWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Datalake_SmartMeterMetaData_Output",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OnPrem_SmartMeterMetaData_Output",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "AzureDB2Datalake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"isolationLevel": "Snapshot"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSql_SmartMeterMetaData_Table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Datalake_SmartMeterMetaData_Output",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Datalake_SmartMeterMetaData_Output')]",
+				"[concat(variables('factoryId'), '/datasets/OnPrem_SmartMeterMetaData_Output')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSql_SmartMeterMetaData_Table')]"
 			]
 		},
 		{
@@ -450,14 +588,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "AzureSql_FlightAndWeather1_Table",
+								"referenceName": "AzureSql_SmartMeterMetaData_Table",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "OnPrem_FlightAndWeatherRawFiles_Output",
+								"referenceName": "OnPrem_SmartMeterMetaData_Output",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -467,8 +605,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/AzureSql_FlightAndWeather1_Table')]",
-				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles_Output')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSql_SmartMeterMetaData_Table')]",
+				"[concat(variables('factoryId'), '/datasets/OnPrem_SmartMeterMetaData_Output')]"
 			]
 		},
 		{
@@ -507,8 +645,7 @@
 								}
 							},
 							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate"
+								"type": "AzureSqlSink"
 							},
 							"enableStaging": false,
 							"translator": {
@@ -516,111 +653,161 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "OriginAirportCode",
+											"name": " MeterSerialNo",
 											"type": "String"
 										},
 										"sink": {
-											"name": "OriginAirportCode",
+											"name": "MeterSerialNo",
 											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "Month",
+											"name": " Material",
 											"type": "String"
 										},
 										"sink": {
-											"name": "Month",
+											"name": "Material",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " Manufacturer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Manufacturer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " MeterType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfManufacture",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "DayofMonth",
+											"name": "YearOfCertification",
 											"type": "String"
 										},
 										"sink": {
-											"name": "DayofMonth",
+											"name": "YearOfCertification",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "CRSDepHour",
+											"name": "MonthOfManufacture",
 											"type": "String"
 										},
 										"sink": {
-											"name": "CRSDepHour",
+											"name": "MonthOfManufacture",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "DayOfWeek",
+											"name": "CreationDate",
 											"type": "String"
 										},
 										"sink": {
-											"name": "DayOfWeek",
+											"name": "CreationDate",
+											"type": "string"
+										}
+									},
+									{
+										"source": {
+											"name": "ModernType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ModernType",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "Carrier",
+											"name": "IMSI",
 											"type": "String"
 										},
 										"sink": {
-											"name": "Carrier",
+											"name": "IMSI",
 											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "DestAirportCode",
+											"name": "IMEI",
 											"type": "String"
 										},
 										"sink": {
-											"name": "DestAirportCode",
+											"name": "IMEI",
 											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "DepDel15",
+											"name": "ICCID",
 											"type": "String"
 										},
 										"sink": {
-											"name": "DepDel15",
+											"name": "ICCID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FirmwareVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FirmwareVer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ConfigurationVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ConfigurationVer",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "WindSpeed",
+											"name": "Status",
 											"type": "String"
 										},
 										"sink": {
-											"name": "WindSpeed",
-											"type": "Int32"
+											"name": "Status",
+											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "SeaLevelPressure",
+											"name": "Seed",
 											"type": "String"
 										},
 										"sink": {
-											"name": "SeaLevelPressure",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "HourlyPrecip",
-											"type": "String"
-										},
-										"sink": {
-											"name": "HourlyPrecip",
+											"name": "Seed",
 											"type": "Int32"
 										}
 									}
@@ -629,14 +816,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
+								"referenceName": "OnPrem_SmartMeterMetaData_Input",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSql_FlightAndWeather_Table",
+								"referenceName": "AzureSql_SmartMeterMetaData_Table",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -646,8 +833,236 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles_Input')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSql_FlightAndWeather_Table')]"
+				"[concat(variables('factoryId'), '/datasets/OnPrem_SmartMeterMetaData_Input')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSql_SmartMeterMetaData_Table')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OnPrem2AzureSQL_byTempTable')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OnPrem2AzureSQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"modifiedDatetimeStart": {
+										"value": "@{adddays(utcnow(),-1)}",
+										"type": "Expression"
+									},
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": " MeterSerialNo",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterSerialNo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " Material",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Material",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " Manufacturer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Manufacturer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " MeterType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfManufacture",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfCertification",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfCertification",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "MonthOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MonthOfManufacture",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "CreationDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "CreationDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "ModernType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ModernType",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "IMSI",
+											"type": "String"
+										},
+										"sink": {
+											"name": "IMSI",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "IMEI",
+											"type": "String"
+										},
+										"sink": {
+											"name": "IMEI",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ICCID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ICCID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FirmwareVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FirmwareVer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ConfigurationVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ConfigurationVer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Status",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Status",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Seed",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Seed",
+											"type": "Int32"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OnPrem_SmartMeterMetaData_Input",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSql_SmartMeterMetaData_Table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/OnPrem_SmartMeterMetaData_Input')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSql_SmartMeterMetaData_Table')]"
 			]
 		},
 		{
@@ -692,133 +1107,18 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "OriginAirportCode",
-											"type": "String"
-										},
-										"sink": {
-											"name": "OriginAirportCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Month",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Month",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DayofMonth",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DayofMonth",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CRSDepHour",
-											"type": "String"
-										},
-										"sink": {
-											"name": "CRSDepHour",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DayOfWeek",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DayOfWeek",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Carrier",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Carrier",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DestAirportCode",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DestAirportCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DepDel15",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DepDel15",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "WindSpeed",
-											"type": "String"
-										},
-										"sink": {
-											"name": "WindSpeed",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SeaLevelPressure",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SeaLevelPressure",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "HourlyPrecip",
-											"type": "String"
-										},
-										"sink": {
-											"name": "HourlyPrecip",
-											"type": "String"
-										}
-									}
-								]
-							}
+							"enableStaging": false
 						},
 						"inputs": [
 							{
-								"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
+								"referenceName": "OnPrem_SmartMeterMetaData_Input",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Datalake_FlightAndWeatherRawFiles",
+								"referenceName": "Datalake_SmartMeterMetaData_Input",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -857,18 +1157,167 @@
 							"sink": {
 								"type": "AzureSqlSink"
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": " MeterSerialNo",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterSerialNo"
+										}
+									},
+									{
+										"source": {
+											"name": " Material",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Material"
+										}
+									},
+									{
+										"source": {
+											"name": " Manufacturer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Manufacturer"
+										}
+									},
+									{
+										"source": {
+											"name": " MeterType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterType"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfManufacture"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfCertification",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfCertification"
+										}
+									},
+									{
+										"source": {
+											"name": "MonthOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MonthOfManufacture"
+										}
+									},
+									{
+										"source": {
+											"name": "CreationDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "CreationDate"
+										}
+									},
+									{
+										"source": {
+											"name": "ModernType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ModernType"
+										}
+									},
+									{
+										"source": {
+											"name": "IMSI",
+											"type": "String"
+										},
+										"sink": {
+											"name": "IMSI"
+										}
+									},
+									{
+										"source": {
+											"name": "IMEI",
+											"type": "String"
+										},
+										"sink": {
+											"name": "IMEI"
+										}
+									},
+									{
+										"source": {
+											"name": "ICCID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ICCID"
+										}
+									},
+									{
+										"source": {
+											"name": "FirmwareVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FirmwareVer"
+										}
+									},
+									{
+										"source": {
+											"name": "ConfigurationVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ConfigurationVer"
+										}
+									},
+									{
+										"source": {
+											"name": "Status",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Status"
+										}
+									},
+									{
+										"source": {
+											"name": "Seed",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Seed"
+										}
+									}
+								]
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "Datalake_FlightAndWeatherRawFiles",
+								"referenceName": "Datalake_SmartMeterMetaData_Input",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSql_FlightAndWeather1_Table",
+								"referenceName": "AzureSql_SmartMeterMetaData_Table",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -878,9 +1327,9 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OnPrem_FlightAndWeatherRawFiles_Input')]",
-				"[concat(variables('factoryId'), '/datasets/Datalake_FlightAndWeatherRawFiles')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSql_FlightAndWeather1_Table')]"
+				"[concat(variables('factoryId'), '/datasets/OnPrem_SmartMeterMetaData_Input')]",
+				"[concat(variables('factoryId'), '/datasets/Datalake_SmartMeterMetaData_Input')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSql_SmartMeterMetaData_Table')]"
 			]
 		},
 		{

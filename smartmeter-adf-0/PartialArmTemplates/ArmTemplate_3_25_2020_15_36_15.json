@@ -6,42 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "smartmeter-adf-0"
-		},
-		"Datasource_1_FileFolder_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'Datasource_1_FileFolder'"
-		},
-		"Datasource_1_Sqlserver_AdventureWorks_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'Datasource_1_Sqlserver_AdventureWorks'"
-		},
-		"Datasource_1_Sqlserver_AdventureWorks_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'Datasource_1_Sqlserver_AdventureWorks'"
-		},
-		"SmartMeter_AzureSQLDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SmartMeter_AzureSQLDB'"
-		},
-		"SmartMeter_datalake_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'SmartMeter_datalake'"
-		},
-		"Datasource_1_FileFolder_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "C:\\SmartMeterData"
-		},
-		"Datasource_1_FileFolder_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "demouser"
-		},
-		"Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "demouser"
-		},
-		"SmartMeter_datalake_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://smartmeterdatalake0.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -101,15 +65,13 @@
 						"inputs": [
 							{
 								"referenceName": "Datalake_SmartMeterMetaData_Output",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "OnPrem_SmartMeterMetaData_Output",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -147,15 +109,13 @@
 						"inputs": [
 							{
 								"referenceName": "AzureSql_SmartMeterMetaData_Table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "Datalake_SmartMeterMetaData_Output",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -208,15 +168,13 @@
 						"inputs": [
 							{
 								"referenceName": "AzureSql_SmartMeterMetaData_Table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "OnPrem_SmartMeterMetaData_Output",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -436,15 +394,13 @@
 						"inputs": [
 							{
 								"referenceName": "OnPrem_SmartMeterMetaData_Input",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "AzureSql_SmartMeterMetaData_Table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -664,15 +620,13 @@
 						"inputs": [
 							{
 								"referenceName": "OnPrem_SmartMeterMetaData_Input",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "AzureSql_SmartMeterMetaData_Table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -731,15 +685,13 @@
 						"inputs": [
 							{
 								"referenceName": "OnPrem_SmartMeterMetaData_Input",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "Datalake_SmartMeterMetaData_Input",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -930,15 +882,13 @@
 						"inputs": [
 							{
 								"referenceName": "Datalake_SmartMeterMetaData_Input",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "AzureSql_SmartMeterMetaData_Table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -1039,9 +989,7 @@
 					"table": "smartmetermetadata"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_AzureSQLDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Datalake_SmartMeterMetaData_Input')]",
@@ -1071,9 +1019,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_datalake')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Datalake_SmartMeterMetaData_Output')]",
@@ -1103,9 +1049,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_datalake')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/OnPrem_SmartMeterMetaData_Input')]",
@@ -1242,172 +1186,17 @@
 				"annotations": [],
 				"type": "FileServer",
 				"typeProperties": {
-					"host": "[parameters('Datasource_1_FileFolder_properties_typeProperties_host')]",
-					"userId": "[parameters('Datasource_1_FileFolder_properties_typeProperties_userId')]",
+					"host": "C:\\SmartMeterData",
+					"userId": "demouser",
 					"password": {
 						"type": "SecureString",
-						"value": "[parameters('Datasource_1_FileFolder_password')]"
+						"value": "**********"
 					}
 				},
 				"connectVia": {
 					"referenceName": "vm-datasource-2",
 					"type": "IntegrationRuntimeReference"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Datasource_1_Sqlserver_AdventureWorks')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('Datasource_1_Sqlserver_AdventureWorks_connectionString')]",
-					"userName": "[parameters('Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('Datasource_1_Sqlserver_AdventureWorks_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "vm-datasource-2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SmartMeter_AzureSQLDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('SmartMeter_AzureSQLDB_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SmartMeter_datalake')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('SmartMeter_datalake_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('SmartMeter_datalake_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/daily_trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "OnPrem2AzureSQL",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2020-03-24T11:25:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								30
-							],
-							"hours": [
-								18
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/OnPrem2AzureSQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/month_trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "OnPrem2Datalake2AzureSQL",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Month",
-						"interval": 1,
-						"startTime": "2020-03-24T12:03:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								12
-							],
-							"monthDays": [
-								1
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/OnPrem2Datalake2AzureSQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/vm-datasource-0')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/vm-datasource-2')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
 			},
 			"dependsOn": []
 		}

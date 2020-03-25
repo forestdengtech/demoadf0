@@ -29,7 +29,7 @@
 		},
 		"Datasource_1_FileFolder_properties_typeProperties_host": {
 			"type": "string",
-			"defaultValue": "C:\\adf_datafiles"
+			"defaultValue": "C:\\SmartMeterData"
 		},
 		"Datasource_1_FileFolder_properties_typeProperties_userId": {
 			"type": "string",
