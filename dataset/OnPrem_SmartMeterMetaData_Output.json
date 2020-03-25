@@ -1,5 +1,5 @@
 {
-	"name": "OnPrem_FlightAndWeatherRawFiles_Output",
+	"name": "OnPrem_SmartMeterMetaData_Output",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Datasource_1_FileFolder",
@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"folderPath": "Output/FlightsAndWeather/@{formatDateTime(adddays(utcnow(),-1),'yyyy')}/@{formatDateTime(adddays(utcnow(),-1),'MM')}/@{formatDateTime(adddays(utcnow(),-1),'dd')}"
+				"folderPath": {
+					"value": "Output/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

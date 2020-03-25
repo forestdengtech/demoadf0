@@ -32,120 +32,153 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"tableOption": "autoCreate"
+						"type": "AzureSqlSink"
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
 							{
-								"source": {
-									"name": "OriginAirportCode",
-									"type": "String"
-								},
 								"sink": {
-									"name": "OriginAirportCode",
+									"name": "MeterSerialNo",
+									"type": "String"
+								}
+							},
+							{
+								"sink": {
+									"name": "Material",
+									"type": "String"
+								}
+							},
+							{
+								"sink": {
+									"name": "Manufacturer",
+									"type": "String"
+								}
+							},
+							{
+								"sink": {
+									"name": "MeterType",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "Month",
+									"name": "YearOfManufacture",
 									"type": "String"
 								},
 								"sink": {
-									"name": "Month",
+									"name": "YearOfManufacture",
 									"type": "Int32"
 								}
 							},
 							{
 								"source": {
-									"name": "DayofMonth",
+									"name": "YearOfCertification",
 									"type": "String"
 								},
 								"sink": {
-									"name": "DayofMonth",
+									"name": "YearOfCertification",
 									"type": "Int32"
 								}
 							},
 							{
 								"source": {
-									"name": "CRSDepHour",
+									"name": "MonthOfManufacture",
 									"type": "String"
 								},
 								"sink": {
-									"name": "CRSDepHour",
+									"name": "MonthOfManufacture",
 									"type": "Int32"
 								}
 							},
 							{
 								"source": {
-									"name": "DayOfWeek",
+									"name": "CreationDate",
 									"type": "String"
 								},
 								"sink": {
-									"name": "DayOfWeek",
+									"name": "CreationDate",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "ModernType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ModernType",
 									"type": "Int32"
 								}
 							},
 							{
 								"source": {
-									"name": "Carrier",
+									"name": "IMSI",
 									"type": "String"
 								},
 								"sink": {
-									"name": "Carrier",
+									"name": "IMSI",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "DestAirportCode",
+									"name": "IMEI",
 									"type": "String"
 								},
 								"sink": {
-									"name": "DestAirportCode",
+									"name": "IMEI",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "DepDel15",
+									"name": "ICCID",
 									"type": "String"
 								},
 								"sink": {
-									"name": "DepDel15",
+									"name": "ICCID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FirmwareVer",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FirmwareVer",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ConfigurationVer",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ConfigurationVer",
 									"type": "Int32"
 								}
 							},
 							{
 								"source": {
-									"name": "WindSpeed",
+									"name": "Status",
 									"type": "String"
 								},
 								"sink": {
-									"name": "WindSpeed",
-									"type": "Int32"
+									"name": "Status",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "SeaLevelPressure",
+									"name": "Seed",
 									"type": "String"
 								},
 								"sink": {
-									"name": "SeaLevelPressure",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "HourlyPrecip",
-									"type": "String"
-								},
-								"sink": {
-									"name": "HourlyPrecip",
+									"name": "Seed",
 									"type": "Int32"
 								}
 							}
@@ -154,13 +187,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
+						"referenceName": "OnPrem_SmartMeterMetaData_Input",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSql_FlightAndWeather_Table",
+						"referenceName": "AzureSql_SmartMeterMetaData_Table",
 						"type": "DatasetReference"
 					}
 				]

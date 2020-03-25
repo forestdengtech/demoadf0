@@ -1,5 +1,5 @@
 {
-	"name": "AzureSql_FlightAndWeather1_Table",
+	"name": "AzureSql_SmartMeterMetaData_Table",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SmartMeter_AzureSQLDB",
@@ -9,61 +9,81 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "OriginAirportCode",
+				"name": "MeterSerialNo",
 				"type": "varchar"
 			},
 			{
-				"name": "Month",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "DayofMonth",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "CRSDepHour",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "DayOfWeek",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "Carrier",
+				"name": "Material",
 				"type": "varchar"
 			},
 			{
-				"name": "DestAirportCode",
+				"name": "Manufacturer",
 				"type": "varchar"
 			},
 			{
-				"name": "DepDel15",
+				"name": "MeterType",
+				"type": "varchar"
+			},
+			{
+				"name": "YearOfManufacture",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "WindSpeed",
+				"name": "YearOfCertification",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "SeaLevelPressure",
+				"name": "MonthOfManufacture",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "HourlyPrecip",
+				"name": "CreationDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ModernType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IMSI",
+				"type": "varchar"
+			},
+			{
+				"name": "IMEI",
+				"type": "varchar"
+			},
+			{
+				"name": "ICCID",
+				"type": "varchar"
+			},
+			{
+				"name": "FirmwareVer",
+				"type": "varchar"
+			},
+			{
+				"name": "ConfigurationVer",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Status",
+				"type": "varchar"
+			},
+			{
+				"name": "Seed",
 				"type": "int",
 				"precision": 10
 			}
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "FlightsAndWeather1"
+			"table": "smartmetermetadata"
 		}
 	}
 }

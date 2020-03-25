@@ -38,132 +38,17 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "OriginAirportCode",
-									"type": "String"
-								},
-								"sink": {
-									"name": "OriginAirportCode",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Month",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Month",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DayofMonth",
-									"type": "String"
-								},
-								"sink": {
-									"name": "DayofMonth",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CRSDepHour",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CRSDepHour",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DayOfWeek",
-									"type": "String"
-								},
-								"sink": {
-									"name": "DayOfWeek",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Carrier",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Carrier",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DestAirportCode",
-									"type": "String"
-								},
-								"sink": {
-									"name": "DestAirportCode",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DepDel15",
-									"type": "String"
-								},
-								"sink": {
-									"name": "DepDel15",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "WindSpeed",
-									"type": "String"
-								},
-								"sink": {
-									"name": "WindSpeed",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SeaLevelPressure",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SeaLevelPressure",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "HourlyPrecip",
-									"type": "String"
-								},
-								"sink": {
-									"name": "HourlyPrecip",
-									"type": "String"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
+						"referenceName": "OnPrem_SmartMeterMetaData_Input",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Datalake_FlightAndWeatherRawFiles",
+						"referenceName": "Datalake_SmartMeterMetaData_Input",
 						"type": "DatasetReference"
 					}
 				]
@@ -205,13 +90,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Datalake_FlightAndWeatherRawFiles",
+						"referenceName": "Datalake_SmartMeterMetaData_Input",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSql_FlightAndWeather1_Table",
+						"referenceName": "AzureSql_SmartMeterMetaData_Table",
 						"type": "DatasetReference"
 					}
 				]

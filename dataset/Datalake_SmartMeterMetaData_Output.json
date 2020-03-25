@@ -1,5 +1,5 @@
 {
-	"name": "Datalake_SmartMeterMetaData_Input",
+	"name": "Datalake_SmartMeterMetaData_Output",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SmartMeter_datalake",
@@ -12,7 +12,7 @@
 				"type": "AzureBlobFSLocation",
 				"fileName": "SmartMeterMetaData.csv",
 				"folderPath": {
-					"value": "/Input/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
+					"value": "/Output/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
 					"type": "Expression"
 				},
 				"fileSystem": "SmartMeterMetaData"

@@ -31,10 +31,6 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"tableOption": "autoCreate"
-					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
@@ -154,13 +150,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "OnPrem_FlightAndWeatherRawFiles_Input",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "AzureSql_FlightAndWeather_Table",
+						"referenceName": "OnPrem_SmartMeterMetaData_Input",
 						"type": "DatasetReference"
 					}
 				]

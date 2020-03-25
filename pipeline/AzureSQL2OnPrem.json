@@ -35,13 +35,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "AzureSql_FlightAndWeather1_Table",
+						"referenceName": "AzureSql_SmartMeterMetaData_Table",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "OnPrem_FlightAndWeatherRawFiles_Output",
+						"referenceName": "OnPrem_SmartMeterMetaData_Output",
 						"type": "DatasetReference"
 					}
 				]
