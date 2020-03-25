@@ -10,6 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
+				"fileName": {
+					"value": "smartmetermetadata_@{formatDateTime(utcnow(),'HHmm')}.csv",
+					"type": "Expression"
+				},
 				"folderPath": {
 					"value": "Output/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
 					"type": "Expression"
@@ -20,52 +24,7 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "OriginAirportCode",
-				"type": "String"
-			},
-			{
-				"name": "Month",
-				"type": "String"
-			},
-			{
-				"name": "DayofMonth",
-				"type": "String"
-			},
-			{
-				"name": "CRSDepHour",
-				"type": "String"
-			},
-			{
-				"name": "DayOfWeek",
-				"type": "String"
-			},
-			{
-				"name": "Carrier",
-				"type": "String"
-			},
-			{
-				"name": "DestAirportCode",
-				"type": "String"
-			},
-			{
-				"name": "DepDel15",
-				"type": "String"
-			},
-			{
-				"name": "WindSpeed",
-				"type": "String"
-			},
-			{
-				"name": "SeaLevelPressure",
-				"type": "String"
-			},
-			{
-				"name": "HourlyPrecip",
-				"type": "String"
-			}
-		]
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
