@@ -1,0 +1,20 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "OnPrem_SmartMeterMetaData_Input",
+						"type": "DatasetReference"
+					},
+					"name": "OnPremFileDataProcess"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(output(\n\t\t{ MeterSerialNo} as string,\n\t\t{ Material} as string,\n\t\t{ Manufacturer} as string,\n\t\t{ MeterType} as string,\n\t\tYearOfManufacture as string,\n\t\tYearOfCertification as string,\n\t\tMonthOfManufacture as string,\n\t\tCreationDate as timestamp 'dd/MM/yyyy HH:mm',\n\t\tModernType as string,\n\t\tIMSI as string,\n\t\tIMEI as string,\n\t\tICCID as string,\n\t\tFirmwareVer as string,\n\t\tConfigurationVer as string,\n\t\tStatus as string,\n\t\tSeed as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> OnPremFileDataProcess"
+		}
+	}
+}

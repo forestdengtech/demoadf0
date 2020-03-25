@@ -41,9 +41,8 @@
 			},
 			{
 				"name": "CreationDate",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 3
+				"type": "datetimeoffset",
+				"scale": 5
 			},
 			{
 				"name": "ModernType",
