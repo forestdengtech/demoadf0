@@ -39,24 +39,40 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
+								"source": {
+									"name": " MeterSerialNo",
+									"type": "String"
+								},
 								"sink": {
 									"name": "MeterSerialNo",
 									"type": "String"
 								}
 							},
 							{
+								"source": {
+									"name": " Material",
+									"type": "String"
+								},
 								"sink": {
 									"name": "Material",
 									"type": "String"
 								}
 							},
 							{
+								"source": {
+									"name": " Manufacturer",
+									"type": "String"
+								},
 								"sink": {
 									"name": "Manufacturer",
 									"type": "String"
 								}
 							},
 							{
+								"source": {
+									"name": " MeterType",
+									"type": "String"
+								},
 								"sink": {
 									"name": "MeterType",
 									"type": "String"
