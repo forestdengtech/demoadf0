@@ -187,16 +187,6 @@
 									"name": "Status",
 									"type": "String"
 								}
-							},
-							{
-								"source": {
-									"name": "Seed",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Seed",
-									"type": "Int32"
-								}
 							}
 						]
 					}
