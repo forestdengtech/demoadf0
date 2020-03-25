@@ -224,15 +224,6 @@
 								"sink": {
 									"name": "Status"
 								}
-							},
-							{
-								"source": {
-									"name": "Seed",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Seed"
-								}
 							}
 						]
 					}
