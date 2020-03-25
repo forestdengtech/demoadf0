@@ -31,6 +31,9 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
+					"sink": {
+						"type": "AzureSqlSink"
+					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
@@ -151,6 +154,12 @@
 				"inputs": [
 					{
 						"referenceName": "OnPrem_SmartMeterMetaData_Input",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSql_SmartMeterMetaData_Table",
 						"type": "DatasetReference"
 					}
 				]
