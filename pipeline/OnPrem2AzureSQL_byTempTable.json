@@ -111,7 +111,7 @@
 							{
 								"source": {
 									"name": "CreationDate",
-									"type": "String"
+									"type": "DateTime"
 								},
 								"sink": {
 									"name": "CreationDate",
