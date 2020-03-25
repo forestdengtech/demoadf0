@@ -15,7 +15,7 @@
 					"value": "/Input/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
 					"type": "Expression"
 				},
-				"fileSystem": "SmartMeterMetaData"
+				"fileSystem": "smartmetermetadata"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
