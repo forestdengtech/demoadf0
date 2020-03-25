@@ -60,7 +60,7 @@
 							},
 							{
 								"source": {
-									"name": "YearOfManufacture",
+									"name": " Manufacturer",
 									"type": "String"
 								},
 								"sink": {
