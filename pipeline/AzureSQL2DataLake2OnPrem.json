@@ -1,9 +1,66 @@
 {
-	"name": "AzureSQL2OnPrem_copy1",
+	"name": "AzureSQL2DataLake2OnPrem",
 	"properties": {
 		"activities": [
 			{
-				"name": "AzureSQL2OnPrem",
+				"name": "AzureSQL2DataLake2OnPrem",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "AzureDB2Datalake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "FileServerWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Datalake_SmartMeterMetaData_Output",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OnPrem_SmartMeterMetaData_Output",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "AzureDB2Datalake",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -23,7 +80,7 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "FileServerWriteSettings"
+							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
@@ -41,7 +98,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "OnPrem_SmartMeterMetaData_Output",
+						"referenceName": "Datalake_SmartMeterMetaData_Output",
 						"type": "DatasetReference"
 					}
 				]
