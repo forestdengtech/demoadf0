@@ -1,5 +1,5 @@
 {
-	"name": "OnPrem_FlightAndWeatherRawFiles_Input",
+	"name": "OnPrem_SmartMeterMetaData_Input",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Datasource_1_FileFolder",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"folderPath": "Input/FlightsAndWeather"
+				"folderPath": "Input"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
@@ -19,47 +19,67 @@
 		},
 		"schema": [
 			{
-				"name": "OriginAirportCode",
+				"name": " MeterSerialNo",
 				"type": "String"
 			},
 			{
-				"name": "Month",
+				"name": " Material",
 				"type": "String"
 			},
 			{
-				"name": "DayofMonth",
+				"name": " Manufacturer",
 				"type": "String"
 			},
 			{
-				"name": "CRSDepHour",
+				"name": " MeterType",
 				"type": "String"
 			},
 			{
-				"name": "DayOfWeek",
+				"name": "YearOfManufacture",
 				"type": "String"
 			},
 			{
-				"name": "Carrier",
+				"name": "YearOfCertification",
 				"type": "String"
 			},
 			{
-				"name": "DestAirportCode",
+				"name": "MonthOfManufacture",
 				"type": "String"
 			},
 			{
-				"name": "DepDel15",
+				"name": "CreationDate",
 				"type": "String"
 			},
 			{
-				"name": "WindSpeed",
+				"name": "ModernType",
 				"type": "String"
 			},
 			{
-				"name": "SeaLevelPressure",
+				"name": "IMSI",
 				"type": "String"
 			},
 			{
-				"name": "HourlyPrecip",
+				"name": "IMEI",
+				"type": "String"
+			},
+			{
+				"name": "ICCID",
+				"type": "String"
+			},
+			{
+				"name": "FirmwareVer",
+				"type": "String"
+			},
+			{
+				"name": "ConfigurationVer",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "Seed",
 				"type": "String"
 			}
 		]

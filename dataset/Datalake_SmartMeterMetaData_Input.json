@@ -1,0 +1,28 @@
+{
+	"name": "Datalake_SmartMeterMetaData_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SmartMeter_datalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "SmartMeterMetaData.csv",
+				"folderPath": {
+					"value": "/Input/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
+					"type": "Expression"
+				},
+				"fileSystem": "smartmetermetadata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

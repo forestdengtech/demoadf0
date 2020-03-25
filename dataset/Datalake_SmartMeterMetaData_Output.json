@@ -1,5 +1,5 @@
 {
-	"name": "Datalake_FlightAndWeatherRawFiles",
+	"name": "Datalake_SmartMeterMetaData_Output",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SmartMeter_datalake",
@@ -10,12 +10,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "AirAndWeather.csv",
+				"fileName": "SmartMeterMetaData.csv",
 				"folderPath": {
-					"value": "@{formatDateTime(adddays(utcnow(),-1),'yyyy')}/@{formatDateTime(adddays(utcnow(),-1),'MM')}",
+					"value": "/Output/@{formatDateTime(utcnow(),'yyyy-MM-dd')}",
 					"type": "Expression"
 				},
-				"fileSystem": "airandweather"
+				"fileSystem": "smartmetermetadata"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

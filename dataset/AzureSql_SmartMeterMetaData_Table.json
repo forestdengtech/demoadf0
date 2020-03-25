@@ -1,0 +1,87 @@
+{
+	"name": "AzureSql_SmartMeterMetaData_Table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SmartMeter_AzureSQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "MeterSerialNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Material",
+				"type": "varchar"
+			},
+			{
+				"name": "Manufacturer",
+				"type": "varchar"
+			},
+			{
+				"name": "MeterType",
+				"type": "varchar"
+			},
+			{
+				"name": "YearOfManufacture",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "YearOfCertification",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MonthOfManufacture",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CreationDate",
+				"type": "varchar"
+			},
+			{
+				"name": "ModernType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IMSI",
+				"type": "varchar"
+			},
+			{
+				"name": "IMEI",
+				"type": "varchar"
+			},
+			{
+				"name": "ICCID",
+				"type": "varchar"
+			},
+			{
+				"name": "FirmwareVer",
+				"type": "varchar"
+			},
+			{
+				"name": "ConfigurationVer",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Status",
+				"type": "varchar"
+			},
+			{
+				"name": "Seed",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "smartmetermetadata"
+		}
+	}
+}
