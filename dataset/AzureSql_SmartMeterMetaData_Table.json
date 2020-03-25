@@ -72,11 +72,6 @@
 			{
 				"name": "Status",
 				"type": "varchar"
-			},
-			{
-				"name": "Seed",
-				"type": "int",
-				"precision": 10
 			}
 		],
 		"typeProperties": {
