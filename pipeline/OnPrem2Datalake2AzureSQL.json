@@ -86,7 +86,156 @@
 					"sink": {
 						"type": "AzureSqlSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": " MeterSerialNo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "MeterSerialNo"
+								}
+							},
+							{
+								"source": {
+									"name": " Material",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Material"
+								}
+							},
+							{
+								"source": {
+									"name": " Manufacturer",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Manufacturer"
+								}
+							},
+							{
+								"source": {
+									"name": " MeterType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "MeterType"
+								}
+							},
+							{
+								"source": {
+									"name": "YearOfManufacture",
+									"type": "String"
+								},
+								"sink": {
+									"name": "YearOfManufacture"
+								}
+							},
+							{
+								"source": {
+									"name": "YearOfCertification",
+									"type": "String"
+								},
+								"sink": {
+									"name": "YearOfCertification"
+								}
+							},
+							{
+								"source": {
+									"name": "MonthOfManufacture",
+									"type": "String"
+								},
+								"sink": {
+									"name": "MonthOfManufacture"
+								}
+							},
+							{
+								"source": {
+									"name": "CreationDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CreationDate"
+								}
+							},
+							{
+								"source": {
+									"name": "ModernType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ModernType"
+								}
+							},
+							{
+								"source": {
+									"name": "IMSI",
+									"type": "String"
+								},
+								"sink": {
+									"name": "IMSI"
+								}
+							},
+							{
+								"source": {
+									"name": "IMEI",
+									"type": "String"
+								},
+								"sink": {
+									"name": "IMEI"
+								}
+							},
+							{
+								"source": {
+									"name": "ICCID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ICCID"
+								}
+							},
+							{
+								"source": {
+									"name": "FirmwareVer",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FirmwareVer"
+								}
+							},
+							{
+								"source": {
+									"name": "ConfigurationVer",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ConfigurationVer"
+								}
+							},
+							{
+								"source": {
+									"name": "Status",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Status"
+								}
+							},
+							{
+								"source": {
+									"name": "Seed",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Seed"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
