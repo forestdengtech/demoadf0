@@ -41,9 +41,7 @@
 			},
 			{
 				"name": "CreationDate",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 5
+				"type": "varchar"
 			},
 			{
 				"name": "ModernType",

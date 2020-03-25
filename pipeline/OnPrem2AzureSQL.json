@@ -115,8 +115,7 @@
 								},
 								"sink": {
 									"name": "CreationDate",
-									"type": "DateTime",
-									"format": "dd/MM/yyyy HH:mm:ss"
+									"type": "string"
 								}
 							},
 							{
