@@ -1,0 +1,21 @@
+{
+	"name": "FTP_SmartMeterMetaData_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Datasource_1_FTP",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation",
+				"folderPath": "Input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
