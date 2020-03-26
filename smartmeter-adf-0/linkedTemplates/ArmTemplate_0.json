@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Datasource_1_Sqlserver_AdventureWorks'"
 		},
+		"Datasource_1_FTP_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Datasource_1_FTP'"
+		},
 		"SmartMeter_datalake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://smartmeterdatalake0.dfs.core.windows.net"
@@ -40,6 +44,14 @@
 			"defaultValue": "demouser"
 		},
 		"Datasource_1_Sqlserver_AdventureWorks_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "demouser"
+		},
+		"Datasource_1_FTP_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "127.0.0.1"
+		},
+		"Datasource_1_FTP_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "demouser"
 		}
@@ -174,11 +186,6 @@
 					{
 						"name": "Status",
 						"type": "varchar"
-					},
-					{
-						"name": "Seed",
-						"type": "int",
-						"precision": 10
 					}
 				],
 				"typeProperties": {
@@ -301,6 +308,121 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Datasource_1_FTP')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FtpServer",
+				"typeProperties": {
+					"host": "[parameters('Datasource_1_FTP_properties_typeProperties_host')]",
+					"port": 21,
+					"enableSsl": false,
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Basic",
+					"userName": "[parameters('Datasource_1_FTP_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Datasource_1_FTP_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "vm-datasource-2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/vm-datasource-2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSql_SmartMeterMetaData1_Table_FTP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SmartMeter_AzureSQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "MeterSerialNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Material",
+						"type": "varchar"
+					},
+					{
+						"name": "Manufacturer",
+						"type": "varchar"
+					},
+					{
+						"name": "MeterType",
+						"type": "varchar"
+					},
+					{
+						"name": "YearOfManufacture",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "YearOfCertification",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MonthOfManufacture",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CreationDate",
+						"type": "varchar"
+					},
+					{
+						"name": "ModernType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "IMSI",
+						"type": "varchar"
+					},
+					{
+						"name": "IMEI",
+						"type": "varchar"
+					},
+					{
+						"name": "ICCID",
+						"type": "varchar"
+					},
+					{
+						"name": "FirmwareVer",
+						"type": "varchar"
+					},
+					{
+						"name": "ConfigurationVer",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "smartmetermetadataFTP"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SmartMeter_AzureSQLDB')]"
 			]
 		},
 		{
@@ -427,6 +549,33 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Datasource_1_FileFolder')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FTP_SmartMeterMetaData_Input')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Datasource_1_FTP",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation",
+						"folderPath": "Input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Datasource_1_FTP')]"
 			]
 		},
 		{
@@ -799,16 +948,6 @@
 										"sink": {
 											"name": "Status",
 											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Seed",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Seed",
-											"type": "Int32"
 										}
 									}
 								]
@@ -1295,15 +1434,6 @@
 										"sink": {
 											"name": "Status"
 										}
-									},
-									{
-										"source": {
-											"name": "Seed",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Seed"
-										}
 									}
 								]
 							}
@@ -1333,82 +1463,217 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/daily_trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
+			"name": "[concat(parameters('factoryName'), '/FTP2AzureSQL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
+				"activities": [
 					{
-						"pipelineReference": {
-							"referenceName": "OnPrem2AzureSQL",
-							"type": "PipelineReference"
+						"name": "FTP2AzureSQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
 						},
-						"parameters": {}
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*",
+									"useBinaryTransfer": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": " MeterSerialNo",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterSerialNo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " Material",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Material",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " Manufacturer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Manufacturer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": " MeterType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MeterType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfManufacture",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "YearOfCertification",
+											"type": "String"
+										},
+										"sink": {
+											"name": "YearOfCertification",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "MonthOfManufacture",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MonthOfManufacture",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "CreationDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "CreationDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ModernType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ModernType",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "IMSI",
+											"type": "String"
+										},
+										"sink": {
+											"name": "IMSI",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "IMEI",
+											"type": "String"
+										},
+										"sink": {
+											"name": "IMEI",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ICCID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ICCID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FirmwareVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FirmwareVer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ConfigurationVer",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ConfigurationVer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Status",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Status",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "FTP_SmartMeterMetaData_Input",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSql_SmartMeterMetaData1_Table_FTP",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2020-03-24T11:25:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								30
-							],
-							"hours": [
-								18
-							]
-						}
-					}
-				}
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/OnPrem2AzureSQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/month_trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "OnPrem2Datalake2AzureSQL",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Month",
-						"interval": 1,
-						"startTime": "2020-03-24T12:03:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								12
-							],
-							"monthDays": [
-								1
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/OnPrem2Datalake2AzureSQL')]"
+				"[concat(variables('factoryId'), '/datasets/FTP_SmartMeterMetaData_Input')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSql_SmartMeterMetaData1_Table_FTP')]"
 			]
 		}
 	]

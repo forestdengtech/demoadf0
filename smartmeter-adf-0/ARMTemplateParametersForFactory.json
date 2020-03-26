@@ -20,6 +20,9 @@
 		"SmartMeter_datalake_accountKey": {
 			"value": ""
 		},
+		"Datasource_1_FTP_password": {
+			"value": ""
+		},
 		"Datasource_1_FileFolder_properties_typeProperties_host": {
 			"value": "C:\\SmartMeterData"
 		},
@@ -31,6 +34,12 @@
 		},
 		"SmartMeter_datalake_properties_typeProperties_url": {
 			"value": "https://smartmeterdatalake0.dfs.core.windows.net"
+		},
+		"Datasource_1_FTP_properties_typeProperties_host": {
+			"value": "127.0.0.1"
+		},
+		"Datasource_1_FTP_properties_typeProperties_userName": {
+			"value": "demouser"
 		}
 	}
 }
