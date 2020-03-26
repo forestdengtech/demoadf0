@@ -7,11 +7,11 @@
 		"typeProperties": {
 			"host": "127.0.0.1",
 			"port": 21,
-			"enableSsl": true,
-			"enableServerCertificateValidation": true,
+			"enableSsl": false,
+			"enableServerCertificateValidation": false,
 			"authenticationType": "Basic",
 			"userName": "demouser",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJhZTE2ODc4ZC1kYmEwLTRmNDgtODZlZS0zNjhjYmU4ZjdiZWQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmZDIzNmQyMC1lYmI1LTRmNmUtOWUzNS03MzgwYTA4N2NhZWYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "vm-datasource-2",
