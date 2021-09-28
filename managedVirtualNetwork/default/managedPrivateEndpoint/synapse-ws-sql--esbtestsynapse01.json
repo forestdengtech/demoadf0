@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sql--esbtestsynapse01",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/2cb4e37d-e888-4d54-ab4c-4faea330473f/resourceGroups/synapse/providers/Microsoft.Synapse/workspaces/esbtestsynapse01",
+		"groupId": "sql",
+		"fqdns": [
+			"esbtestsynapse01.489eae4b-2737-4f5e-ba78-a44ed132fb09.sql.azuresynapse.net"
+		]
+	}
+}

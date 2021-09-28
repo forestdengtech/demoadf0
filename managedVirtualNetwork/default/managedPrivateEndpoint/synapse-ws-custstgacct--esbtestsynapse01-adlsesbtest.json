@@ -1,0 +1,7 @@
+{
+	"name": "synapse-ws-custstgacct--esbtestsynapse01-adlsesbtest",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/2cb4e37d-e888-4d54-ab4c-4faea330473f/resourceGroups/synapse/providers/Microsoft.Storage/storageAccounts/adlsesbtest",
+		"groupId": "dfs"
+	}
+}
