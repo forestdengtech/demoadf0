@@ -23,7 +23,7 @@
 						"coreCount": 32,
 						"computeType": "MemoryOptimized"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "Coarse"
 				}
 			}
 		],
