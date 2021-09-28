@@ -19,11 +19,18 @@
 						"referenceName": "asal400_lab2_writecampaignanalyticstoasa",
 						"type": "DataFlowReference"
 					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "asadatalake459930",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "staging"
+					},
 					"compute": {
 						"coreCount": 32,
 						"computeType": "MemoryOptimized"
 					},
-					"traceLevel": "Coarse"
+					"traceLevel": "Fine"
 				}
 			}
 		],
