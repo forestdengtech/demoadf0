@@ -276,7 +276,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/dataflows/asal400_lab2_writecampaignanalyticstoasa')]",
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('workspaceId'), '/linkedServices/asadatalake459930')]"
 			]
 		},
@@ -384,6 +383,51 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/asacosmosdb01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/asal400_ecommerce_userprofiles_source')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "asadatalake459930",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "online-user-profiles-02",
+						"fileSystem": "wwi-02"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"visitorId": {
+							"type": "integer"
+						},
+						"topProductPurchases": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"productId": {
+										"type": "integer"
+									},
+									"itemsPurchasedLast12Months": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/asadatalake459930')]"
 			]
 		},
 		{
@@ -1131,6 +1175,70 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/datasets/asal400_campaign_analytics_source')]",
 				"[concat(variables('workspaceId'), '/datasets/asal400_wwi_campaign_analytics_asa')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/asal400_lab2_writeuserprofiledatatoasa')]",
+			"type": "Microsoft.Synapse/workspaces/dataflows",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "asal400_ecommerce_userprofiles_source",
+								"type": "DatasetReference"
+							},
+							"name": "EcommerceUserProfiles"
+						},
+						{
+							"dataset": {
+								"referenceName": "asal400_customerprofile_cosmosdb",
+								"type": "DatasetReference"
+							},
+							"name": "UserProfiles"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "asal400_wwi_usertopproductpurchases_asa",
+								"type": "DatasetReference"
+							},
+							"name": "UserTopProductPurchasesASA"
+						}
+					],
+					"transformations": [
+						{
+							"name": "userId"
+						},
+						{
+							"name": "UserTopProducts"
+						},
+						{
+							"name": "DeriveProductColumns"
+						},
+						{
+							"name": "UserPreferredProducts"
+						},
+						{
+							"name": "JoinTopProductsWithPreferredProducts"
+						},
+						{
+							"name": "DerivedColumnsForMerge"
+						},
+						{
+							"name": "Filter1"
+						}
+					],
+					"script": "source(output(\n\t\tvisitorId as integer,\n\t\ttopProductPurchases as (productId as integer, itemsPurchasedLast12Months as integer)[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments',\n\twildcardPaths:['online-user-profiles-02/*.json']) ~> EcommerceUserProfiles\nsource(output(\n\t\tuserId as integer,\n\t\tcartId as string,\n\t\tpreferredProducts as integer[],\n\t\tproductReviews as (productId as integer, reviewText as string, reviewDate as string)[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document') ~> UserProfiles\nEcommerceUserProfiles derive(visitorId = toInteger(visitorId)) ~> userId\nuserId foldDown(unroll(topProductPurchases),\n\tmapColumn(\n\t\tvisitorId,\n\t\tproductId = topProductPurchases.productId,\n\t\titemsPurchasedLast12Months = topProductPurchases.itemsPurchasedLast12Months\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> UserTopProducts\nUserTopProducts derive(productId = toInteger(productId),\n\t\titemsPurchasedLast12Months = toInteger(itemsPurchasedLast12Months)) ~> DeriveProductColumns\nUserProfiles foldDown(unroll(preferredProducts),\n\tmapColumn(\n\t\tuserId,\n\t\tpreferredProductId = preferredProducts\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> UserPreferredProducts\nDeriveProductColumns, UserPreferredProducts join(visitorId == userId,\n\tjoinType:'outer',\n\tpartitionBy('hash', 30,\n\t\tproductId\n\t),\n\tbroadcast: 'left')~> JoinTopProductsWithPreferredProducts\nJoinTopProductsWithPreferredProducts derive(isTopProduct = toBoolean(iif(isNull(productId), 'false', 'true')),\n\t\tisPreferredProduct = toBoolean(iif(isNull(preferredProductId), 'false', 'true')),\n\t\tproductId = iif(isNull(productId), preferredProductId, productId),\n\t\tuserId = iif(isNull(userId), visitorId, userId)) ~> DerivedColumnsForMerge\nDerivedColumnsForMerge filter(!isNull(productId)) ~> Filter1\nFilter1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tUserId as integer,\n\t\tProductId as integer,\n\t\tItemsPurchasedLast12Months as integer,\n\t\tIsTopProduct as boolean,\n\t\tIsPreferredProduct as boolean\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tUserId = userId,\n\t\tProductId = productId,\n\t\tItemsPurchasedLast12Months = itemsPurchasedLast12Months,\n\t\tIsTopProduct = isTopProduct,\n\t\tIsPreferredProduct = isPreferredProduct\n\t)) ~> UserTopProductPurchasesASA"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/asal400_ecommerce_userprofiles_source')]",
+				"[concat(variables('workspaceId'), '/datasets/asal400_customerprofile_cosmosdb')]",
+				"[concat(variables('workspaceId'), '/datasets/asal400_wwi_usertopproductpurchases_asa')]"
 			]
 		},
 		{
@@ -3859,19 +3967,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQLPool01')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"collation": "SQL_Latin1_General_CP1_CI_AS",
-				"maxSizeBytes": 263882790666240,
-				"restorePointInTime": "0001-01-01T00:00:00",
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "eastus"
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/default')]",
 			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
 			"apiVersion": "2019-06-01-preview",
@@ -3919,6 +4014,28 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQLPool01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Pipeline 2')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }
