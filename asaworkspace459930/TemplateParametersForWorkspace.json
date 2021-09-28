@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "asaworkspace459930"
+		},
+		"asacosmosdb01_connectionString": {
+			"value": ""
+		},
+		"asadatalake459930_accountKey": {
+			"value": ""
+		},
+		"asastore459930_connectionString": {
+			"value": ""
+		},
+		"asaworkspace459930-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"esbtestsynapse01-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"sqlpool01_connectionString": {
+			"value": ""
+		},
+		"sqlpool01_highperf_connectionString": {
+			"value": ""
+		},
+		"sqlpool01_import01_connectionString": {
+			"value": ""
+		},
+		"sqlpool01_workload01_connectionString": {
+			"value": ""
+		},
+		"sqlpool01_workload02_connectionString": {
+			"value": ""
+		},
+		"asadatalake459930_properties_typeProperties_url": {
+			"value": "https://asadatalake459930.dfs.core.windows.net"
+		},
+		"asakeyvault459930_properties_typeProperties_baseUrl": {
+			"value": "https://asakeyvault459930.vault.azure.net/"
+		},
+		"asaworkspace459930-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://asadatalake459930.dfs.core.windows.net"
+		},
+		"esbtestsynapse01-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://adlsesbtest.dfs.core.windows.net"
+		}
+	}
+}
